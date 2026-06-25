@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/DB/" />
+  <Folder Name="/DB/sp/">
+    <File Path="uspDelete.sql" />
+    <File Path="uspGetAllRead.sql" />
+    <File Path="uspGetEmpByIdRead.sql" />
+    <File Path="uspInsertCreate.sql" />
+    <File Path="uspUpdate.sql" />
+  </Folder>
+  <Folder Name="/DB/sql/">
+    <File Path="EmployeeA.sql" />
+  </Folder>
+  <Project Path="EmployeeA/EmployeeA.csproj" />
+</Solution>
