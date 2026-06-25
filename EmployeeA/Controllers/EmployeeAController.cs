@@ -12,16 +12,33 @@ namespace EmployeeA.Controllers
         {
             _employeeAService = employeeAService;
         }
+
         [HttpGet]
+        [Route("GetAllEmployees")]
         public async Task<IActionResult> GetAllEmployee()
         {
-            return null;
+            try
+            {
+                var response = await _employeeAService.GetAllEmployee();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
         [HttpGet]
-        [Route("id")]
+        [Route("GetEmployeeById")]
         public async Task<IActionResult> GetEmployeeById(int id) 
         {
-            return null;
+            try {
+            var res=await _employeeAService.GetEmployeeById(id);
+                return Ok(res);
+
+            }
+            catch(Exception ex) {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPost]
