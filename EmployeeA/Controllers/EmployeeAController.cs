@@ -1,5 +1,7 @@
-﻿using EmployeeA.Service;
+﻿using EmployeeA.Model;
+using EmployeeA.Service;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.SqlClient;
 
 namespace EmployeeA.Controllers
 {
@@ -19,7 +21,53 @@ namespace EmployeeA.Controllers
         {
             try
             {
-                var response = await _employeeAService.GetAllEmployee();
+                var res = await _employeeAService.GetAllEmployee();
+                return Ok(res);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+        }
+        [HttpGet]
+        [Route("GetEmployeeById")]
+        public async Task<IActionResult> GetEmployeeById(int id)
+        {
+            try
+            {
+                var res = await _employeeAService.GetEmployeeById(id);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [Route("InsertEmployee")]
+        public async Task<IActionResult> InsertEmployee(Employee employee)
+        {
+            try
+            {
+                var res = await _employeeAService.InsertEmployeeAsync(employee);
+                return Ok(res);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateEmployee")]
+        public async Task<IActionResult> UpdateEmployee(Employee employee)
+        {
+            try
+            {
+                var response = await _employeeAService.UpdateEmployeeAsync(employee);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -27,37 +75,17 @@ namespace EmployeeA.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        [HttpGet]
-        [Route("GetEmployeeById")]
-        public async Task<IActionResult> GetEmployeeById(int id) 
-        {
-            try {
-            var res=await _employeeAService.GetEmployeeById(id);
-                return Ok(res);
-
-            }
-            catch(Exception ex) {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> InsertEmployee() {
-            return null;
-        }
-
-        [HttpPut]
-        [Route("id")]
-        public async Task<IActionResult>UpdateEmployee(int id)
-        {
-            return null;
-        }
 
         [HttpDelete]
-        [Route("id")]
-        public async Task<IActionResult> DeleteEmployee(int id) 
+        [Route("DeleteEmployee")]
+        public async Task<IActionResult> DeleteEmployee(int id)
         {
-            return null;
+            try
+            {
+                var response = await _employeeAService.DeleteEmployeeAsync(id);
+                return Ok(response);
+            }
+            catch (Exception ex) { return StatusCode(StatusCodes.Status500InternalServerError); }
         }
     }
 }

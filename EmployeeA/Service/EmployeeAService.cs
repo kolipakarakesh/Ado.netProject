@@ -12,24 +12,35 @@ namespace EmployeeA.Service
             connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public Task<bool> DeleteEmployeeAsync(int id)
+        public async Task<bool> DeleteEmployeeAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id != 0)
+            {
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+                SqlCommand sqlCommand = new SqlCommand("[dbo].[spdelete]", con);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("id", id);
+                sqlCommand.ExecuteNonQuery();
+                con.Close();
+                return true;
+            }
+            return false;
         }
 
         public async Task<List<Employee>> GetAllEmployee()
         {
-            List<Employee> getallemployees=new List<Employee>();
-            Employee getemployee=null;
-            SqlConnection connection=new SqlConnection(connectionString);
+            List<Employee> getallemployees = new List<Employee>();
+            Employee getemployee = null;
+            SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            SqlCommand sqlCommand = new SqlCommand("[dbo].[spgetallRead]",connection);
-            sqlCommand.CommandType= CommandType.StoredProcedure;
-            SqlDataAdapter sqlDataAdapter=new SqlDataAdapter(sqlCommand);
-            DataTable dt=new DataTable();
+            SqlCommand sqlCommand = new SqlCommand("[dbo].[spgetallRead]", connection);
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+            DataTable dt = new DataTable();
             sqlDataAdapter.Fill(dt);
             connection.Close();
-            if (dt.Rows.Count>0)
+            if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
                 {
@@ -46,46 +57,72 @@ namespace EmployeeA.Service
                 }
             }
             return getallemployees;
-         }
+        }
 
         public Task<Employee> GetEmployeeById(int id)
         {
-            Employee emp = null;
-            SqlConnection connection=new SqlConnection(connectionString);
+            Employee employee = null;
+            SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             SqlCommand sqlCommand = new SqlCommand("[dbo].[spgetempbyidRead]", connection);
-            sqlCommand.CommandType=CommandType.StoredProcedure;
-            sqlCommand.Parameters.AddWithValue("@id",id);
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("@id", id);
             SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
-            DataTable dt=new DataTable();
+            DataTable dt = new DataTable();
             sqlDataAdapter.Fill(dt);
             connection.Close();
-            if(dt.Rows.Count > 0)
+            if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
                 {
-                    emp= new Employee();
-                    emp.Id = Convert.ToInt32(item["Id"]);
-                    emp.Name = item["Name"].ToString();
-                    emp.Address = item["Address"].ToString();
-                    emp.CreatedOn = Convert.ToDateTime(item["CreatedOn"]);
-                    emp.CreatedBy = item["CreatedBy"].ToString();
-                    emp.ModifiedOn = Convert.ToDateTime(item["ModifiedOn"]);
-                    emp.ModifiedBy = item["ModifiedBy"].ToString();
-                    emp.IsActive = Convert.ToBoolean(item["IsActive"]);
+                    employee = new Employee();
+                    employee.Id = Convert.ToInt32(item["id"]);
+                    employee.Name = item["Name"].ToString();
+                    employee.Address = item["Address"].ToString();
+                    employee.CreatedBy = item["CreatedBy"].ToString();
+                    employee.ModifiedBy = item["ModifiedBy"].ToString();
+                    employee.CreatedOn = Convert.ToDateTime(item["CreatedOn"]);
+                    employee.ModifiedOn = Convert.ToDateTime(item["ModifiedOn"]);
+                    employee.IsActive = Convert.ToBoolean(item["IsActive"]);
                 }
+
             }
-            return Task.FromResult(emp);
+            return Task.FromResult(employee);
         }
 
-        public Task<bool> InsertEmployeeAsync(Employee employee)
+        public async Task<bool> InsertEmployeeAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            if (employee != null)
+            {
+                SqlConnection connection = new SqlConnection(connectionString);
+                connection.Open();
+                SqlCommand sqlCommand = new SqlCommand("[dbo].[spinsertcreate]", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@name", employee.Name);
+                sqlCommand.Parameters.AddWithValue("@address", employee.Address);
+                sqlCommand.ExecuteNonQuery();
+                connection.Close();
+                return true;
+            }
+            return false;
         }
 
-        public Task<bool> UpdateEmployeeAsync(Employee employee)
+        public async Task<bool> UpdateEmployeeAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            if (employee != null)
+            {
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                sqlConnection.Open();
+                SqlCommand sqlCommand = new SqlCommand("[dbo].[spupdateemployeea]", sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@id", employee.Id);
+                sqlCommand.Parameters.AddWithValue("@name", employee.Name);
+                sqlCommand.Parameters.AddWithValue("@address", employee.Address);
+                sqlCommand.ExecuteNonQuery();
+                sqlConnection.Close();
+                return true;
+            }
+            return false;
         }
     }
 }
