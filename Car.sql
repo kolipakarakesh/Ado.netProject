@@ -1,0 +1,20 @@
+﻿create table Car(
+CarId int identity(1010,1) primary key,
+CarName nvarchar(99) not null,
+Brand nvarchar(99) not null,
+Model nvarchar(99) not null,
+Variant nvarchar(99) null,
+FuelType nvarchar(99) not null,
+Transmission nvarchar(99) not null,
+SeatingCapacity int not null,
+EngineCC int not null,
+Mileage decimal(5,2),
+Color nvarchar(33),
+Price decimal(12,2),
+ManufacturerYear int not null,
+CreatedBy nvarchar(12) default 'System',
+CreatedOn datetime default GetDate(),
+ModifiedBy nvarchar(12) default 'System',
+ModifiedOn datetime default GetDate(),
+IsAvailable bit default 1
+);

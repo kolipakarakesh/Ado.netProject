@@ -1,6 +1,13 @@
 <Solution>
   <Folder Name="/DB/" />
   <Folder Name="/DB/sp/" />
+  <Folder Name="/DB/sp/Car/">
+    <File Path="uspCreateCarDetails.sql" />
+    <File Path="uspDeleteCarDetails.sql" />
+    <File Path="uspGetAllCarsDetails.sql" />
+    <File Path="uspGetCarDetailsById.sql" />
+    <File Path="uspUpdateCarDetails.sql" />
+  </Folder>
   <Folder Name="/DB/sp/EmployeeA/">
     <File Path="uspDelete.sql" />
     <File Path="uspGetAllRead.sql" />
@@ -9,6 +16,9 @@
     <File Path="uspUpdate.sql" />
   </Folder>
   <Folder Name="/DB/sql/" />
+  <Folder Name="/DB/sql/Car/">
+    <File Path="Car.sql" />
+  </Folder>
   <Folder Name="/DB/sql/EmployeeA/">
     <File Path="EmployeeA.sql" />
   </Folder>
